@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title%}Formulario {% endblock %}
+{% block content %}
+<form action="" method="POST">
+    <label for="CardType">Card Type</label>
+    <input type="text" id="CardType" name="CardType" value="001"><br>
+    <label for="CardNumber">Card Number</label>
+    <input type="text" id="CardNumber" name="CardNumber" value="4456530000001096"><br>
+    <label for="CardExpirationMonth">Card Expiration Month</label>
+    <input type="text" id="CardExpirationMonth" name="CardExpirationMonth" value="01"><br>
+    <label for="CardExpirationYear">Card Expiration Year</label>
+    <input type="text" id="CardExpirationYear" name="CardExpirationYear" value="2023"><br>
+    <label for="TotalAmount">Total Amount</label>
+    <input type="text" id="TotalAmount" name="TotalAmount" value="102.21"><br>
+
+    <input type="submit" id="setup" value="Setup">
+</form>
+
+{% endblock %}

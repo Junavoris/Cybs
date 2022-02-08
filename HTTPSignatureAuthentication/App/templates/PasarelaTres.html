@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block title%}Formulario {% endblock %}
+{% block content %}
+<form id="validate-form" action="Validate" method="post">
+    <input type="hidden" id="CardType" name="CardType" value="{{data['CardType']}}"><br>
+    <input type="hidden" id="CardNumber" name="CardNumber" value="{{data['CardNumber']}}"><br>
+    <input type="hidden" id="CardExpirationMonth" name="CardExpirationMonth"
+        value="{{data['CardExpirationMonth']}}"><br>
+    <input type="hidden" id="CardExpirationYear" name="CardExpirationYear" value="{{data['CardExpirationYear']}}"><br>
+    <input type="hidden" id="TotalAmount" name="TotalAmount" value="{{data['TotalAmount']}}"><br>
+    <input type="hidden" id="referenceId" name="referenceId" value="{{data['referenceId']}}"><br>
+    <input type="hidden" id="SessionId" name="SessionId" value="{{data['SessionId']}}"><br>
+    <input type="hidden" id="TransactionId" name="TransactionId"><br>
+</form>
+
+<iframe id="step-up-iframe" name="step-up-iframe"></iframe>
+<!--style="display: none;" -->
+<form id="step-up-form" method="post" target="step-up-iframe" action="{{data['stepUpUrl']}}">
+    <input type="hidden" id="step_up_form_input" name="JWT" value="{{data['accessToken']}}">
+</form>
+
+
+<script>
+    var iframe = document.getElementById('step-up-iframe');
+    switch ("{{data['challengeWindowSize']}}") {
+        case '01':
+            iframe.height = "400"
+            iframe.width = "250"
+            break;
+        case '02':
+            iframe.height = "400"
+            iframe.width = "390"
+            break;
+        case '03':
+            iframe.height = "600"
+            iframe.width = "500"
+            break;
+        case '04':
+            iframe.height = "400"
+            iframe.width = "600"
+            break;
+        case '05':
+            iframe.height = "100%"
+            iframe.width = "100%"
+            break;
+        default:
+            iframe.height = "400"
+            iframe.width = "400"
+    };
+
+
+</script>
+
+<script>
+    window.onload = function () {
+        var stepUpForm = document.querySelector('#step-up-form');
+        if (stepUpForm) // Step-Up form exists
+            stepUpForm.submit();
+    }
+</script>
+
+<script>
+    window.addEventListener("message", function (event) {
+        if (event.origin === "http://localhost:5000") {
+            document.getElementById("TransactionId").setAttribute('value', event.data);
+            var enrollForm = document.querySelector('#validate-form');
+            enrollForm.submit();
+        }
+    }, false);
+</script>
+
+{% endblock %}

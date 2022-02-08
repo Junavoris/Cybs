@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="home">
+    <h1>Authentication Failed</h1>
+    <p>Your card issuer cannot authenticate this card. Please select another card or form
+        of payment to complete your purchase.</p>
+  </div>
+{% if ("{{data}}"): %}
+<h1>{{data['reason']}}</h1>
+<p>{{data['message']}}</p>
+{% endif %}
+
+
+{% endblock %}

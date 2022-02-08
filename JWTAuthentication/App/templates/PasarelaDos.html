@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title%} Recoleccion {% endblock %}
+{% block content %}
+<form id="enroll-form" action="Enroll" method="post">
+    <input type="hidden" id="CardType" name="CardType" value="{{data['CardType']}}" ><br>
+    <input type="hidden" id="CardNumber" name="CardNumber" value="{{data['CardNumber']}}"><br>
+    <input type="hidden" id="CardExpirationMonth" name="CardExpirationMonth" value="{{data['CardExpirationMonth']}}"><br>
+    <input type="hidden" id="CardExpirationYear" name="CardExpirationYear" value="{{data['CardExpirationYear']}}"><br>
+    <input type="hidden" id="TotalAmount" name="TotalAmount" value="{{data['TotalAmount']}}"><br>
+    <input type="hidden" id="referenceId" name="referenceId" value="{{data['referenceId']}}"><br>
+    <input type="hidden" id="SessionId" name="SessionId" ><br>
+</form>
+
+<div class="loader"></div>
+
+<iframe id="cardinal_collection_iframe" name="collectionIframe" height="1" width="1" style="display: none;"></iframe>
+<form id="cardinal_collection_form" method="POST" target="collectionIframe"
+    action="{{ data['deviceDataCollectionUrl'] }}">
+    <input id="cardinal_collection_form_input" type="hidden" name="JWT" value="{{ data['accessToken'] }}">
+</form>
+
+<script>
+    window.onload = function () {
+        var cardinalCollectionForm = document.querySelector('#cardinal_collection_form');
+        if (cardinalCollectionForm) // form exists
+            cardinalCollectionForm.submit();
+    }
+</script>
+
+
+<script>
+    window.addEventListener("message", function (event) {
+        if (event.origin === "https://centinelapistag.cardinalcommerce.com") {
+            document.getElementById("SessionId").setAttribute('value', JSON.parse(event.data)['SessionId']);
+            var enrollForm = document.querySelector('#enroll-form');
+            enrollForm.submit();
+        }
+    }, false);
+</script>
+
+
+{% endblock %}
